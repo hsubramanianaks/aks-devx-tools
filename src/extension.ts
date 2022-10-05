@@ -108,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
           command: "aks-draft-extension.runDraftUpdate",
         });
       }
-      runDraftUpdate(context, vscode.Uri.parse(folder).fsPath);
+      runDraftUpdate(context, vscode.Uri.parse(folder).fsPath, az);
     }
   );
 
