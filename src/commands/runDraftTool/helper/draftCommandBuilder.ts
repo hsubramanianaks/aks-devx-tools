@@ -33,7 +33,7 @@ export function buildCreateConfig(
     port: string,
     appName: string,
     workflow: string,
-    dotnetVersion: string
+    languageVersion: string
 ): string {
     let data = {
         deployType: workflow,
@@ -52,17 +52,17 @@ export function buildCreateConfig(
         ]
     };
 
-    if (appName.length > 0) {
+    if (appName?.length > 0) {
         data.deployVariables.push({
             name: "APPNAME",
             value: appName
         });
     }
 
-    if (dotnetVersion.length > 0) {
+    if (languageVersion?.length > 0) {
         data.languageVariables.push({
             name: "VERSION",
-            value: dotnetVersion
+            value: languageVersion
         });
     }
 
@@ -93,9 +93,13 @@ export function buildGenerateWorkflowCommand(
 }
 
 export function buildUpdateCommand(
-    destination: string,
+    outputFolder: string,
     host: string,
-    certificate: string
+    certificate: string,
+    port: string,
+    namespace: string,
+    service: string,
+    useOpenServiceMesh: boolean
 ): string {
-    return `update -a ${host} -s ${certificate} -d ${destination}`;
+    return `update -d ${outputFolder} -a webapp_routing --variable ingress-use-osm-mtls=${useOpenServiceMesh} --variable ingress-host=${host} --variable ingress-tls-cert-keyvault-uri=${certificate} --variable ingress-port=${port} --variable ingress-service=${service} --variable ingress-namespace=${namespace}`;
 }
